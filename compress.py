@@ -26,7 +26,48 @@ def compress_to_zip(filename: str, out_dir: str) -> None:
     ensure_directory_exists(out_dir)  # Ensure the directory is created
     archive_name = generate_unique_archive_name(filename, 'zip', out_dir)
     print(f"Creating ZIP archive: {Path(out_dir) / archive_name}")  # Debug
-    with zipfile.ZipFile(Path(out_dir) / archive_name, 'w') as zipf:
-        zipf.write(filename, arcname=Path(filename).name)
+    try:
+        with zipfile.ZipFile(Path(out_dir) / archive_name, 'w') as zipf:
+            zipf.write(filename, arcname=Path(filename).name)
+    except FileNotFoundError:
+        print(f"Error: The source file '{filename}' does not exist.")
+    except Exception as e:
+        print(f"An unexpected error occurred while creating ZIP archive: {e}")
 
-compress_to_zip('example2.txt', './archives')
+def compress_to_gzip(filename: str, out_dir: str) -> None:
+    """File compression in GZIP format."""
+    archive_name = generate_unique_archive_name(filename, 'gz', out_dir)
+    print(f"Creating GZIP archive: {Path(out_dir) / archive_name}")
+    try:
+        with gzip.open(Path(out_dir) / archive_name, 'wb') as f_out:
+            with open(filename, 'rb') as f_in:
+                f_out.write(f_in.read())
+    except FileNotFoundError:
+        print(f"Error: The source file '{filename}' does not exist.")
+    except Exception as e:
+        print(f"An unexpected error occurred while creating GZIP archive: {e}")
+
+
+def main():
+    try:
+        source_file = input("Source file     : ").strip()
+        output_dir = input("Output directory: ").strip()
+        archive_type = input("Archive type    : ").strip().lower()
+
+        # Ensure the output directory exists
+        ensure_directory_exists(output_dir)
+
+        # Call the appropriate compression function based on user input
+        if archive_type == 'zip':
+            compress_to_zip(source_file, output_dir)
+        elif archive_type == 'gzip':
+            compress_to_gzip(source_file, output_dir)
+        else:
+            print("Unsupported archive type. Please choose either 'zip' or 'gzip'.")
+    except ValueError:
+        print("Error: Invalid value entered.")
+    except Exception as e:
+        print(f"An unexpected error occurred in main: {e}")
+
+if __name__ == "__main__":
+    main()
