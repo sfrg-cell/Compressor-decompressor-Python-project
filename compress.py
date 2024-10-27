@@ -107,6 +107,8 @@ def main():
             compress_to_gzip(source_file, output_dir)
         elif archive_type == 'bzip2':
             compress_to_bzip2(source_file, output_dir)
+        elif archive_type == 'xz':
+            compress_to_bzip2(source_file, output_dir)
         else:
             print("Unsupported archive type. Please choose either 'zip', 'gzip', 'bzip2' or 'xz'.")
     except ValueError:
