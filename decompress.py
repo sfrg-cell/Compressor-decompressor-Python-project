@@ -1,8 +1,7 @@
 import zipfile
 import gzip
-import bzip2
+import bz2
 import lzma
-import sys
 from pathlib import Path
 
 def ensure_directory_exists(directory: Path) -> None:
@@ -102,58 +101,67 @@ def decompress_gzip(gzip_filename: Path, output_dir: Path) -> None:
     except Exception as e:
         print(f"An error occurred: {e}")
 
-def decompress(source, output_dir):
-    # Create output directory if it doesn't exist
-    Path(output_dir).mkdir(exist_ok=True)
+def decompress_xz(xz_filename: Path, output_dir: Path) -> None:
+    """Decompress an XZ file."""
+    ensure_directory_exists(output_dir)  # Ensure output directory exists
 
-    # Create output path by removing .bz2 extension from source filename
-    output_path = Path(output_dir) / Path(source).name.replace('.bz2', '')
+    # Generate the path to the unpacked file by removing .xz extension
+    output_filename = xz_filename.with_suffix('.txt').name
+    output_path = output_dir / output_filename
 
-    # Open source file for reading and destination for writing
-    with bz2.open(source, 'rb') as src, open(output_path, 'wb') as dst:
-        # Read compressed data and write decompressed result
-        dst.write(src.read())
-    print(f"Decompressed: {output_path}")
+    # Check for file existence
+    if output_path.exists():
+        print(f"Output file already exists: {output_path}")
+        if not handle_existing_file(output_path):
+            print("Skipping extraction.")
+            return
 
-    # Check if correct number of arguments provided
-    if len(sys.argv) != 3:
-        print("Usage: python decompress.py <source_file> <output_dir>")
-        sys.exit(1)
+    try:
+        with lzma.open(xz_filename, 'rb') as f_in:  # Open the XZ file in binary read mode
+            with open(output_path, 'wb') as f_out:  # Open the output file in binary write mode
+                f_out.write(f_in.read())  # Read from the XZ file and write to the output file
 
-    # Call decompress function with command line arguments
-    decompress(sys.argv[1], sys.argv[2])
+        print(f"Decompressed XZ archive: {xz_filename} to {output_path}")
+    except OSError:
+        print(f"Error: '{xz_filename}' is not a valid XZ archive.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
+def decompress_bz2(bz2_filename: Path, output_dir: Path) -> None:
+    """Decompress a BZIP2 file."""
+    ensure_directory_exists(output_dir)  # Ensure output directory exists
 
-def decompress(source, output_dir):
-    # Create output directory if it doesn't exist
-    Path(output_dir).mkdir(exist_ok=True)
+    # Generate the path to the unpacked file by removing .bz2 extension
+    output_filename = bz2_filename.with_suffix('.txt').name
+    output_path = output_dir / output_filename
 
-    # Create output path by removing .xz extension from source filename
-    output_path = Path(output_dir) / Path(source).name.replace('.xz', '')
+    # Check for file existence
+    if output_path.exists():
+        print(f"Output file already exists: {output_path}")
+        if not handle_existing_file(output_path):
+            print("Skipping extraction.")
+            return
 
-    # Open source file for reading and destination for writing
-    with lzma.open(source, 'rb') as src, open(output_path, 'wb') as dst:
-        # Read compressed data and write decompressed result
-        dst.write(src.read())
-    print(f"Decompressed: {output_path}")
+    try:
+        with bz2.open(bz2_filename, 'rb') as f_in:  # Open the BZIP2 file in binary read mode
+            with open(output_path, 'wb') as f_out:  # Open the output file in binary write mode
+                f_out.write(f_in.read())  # Read from the BZIP2 file and write to the output file
 
-# Check if correct number of arguments provided
-if len(sys.argv) != 3:
-    print("Usage: python decompress.py <source_file> <output_dir>")
-    sys.exit(1)
-
-# Call decompress function with command line arguments
-decompress(sys.argv[1], sys.argv[2])
+        print(f"Decompressed BZIP2 archive: {bz2_filename} to {output_path}")
+    except OSError:
+        print(f"Error: '{bz2_filename}' is not a valid BZIP2 archive.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 
 def main():
     """Main function to handle user input for decompression."""
     while True:
-        archive_type = input("Archive type (zip/gz): ").strip().lower()
-        if archive_type in ('zip', 'gz'):
+        archive_type = input("Archive type (zip/gz/bz2/xz): ").strip().lower()
+        if archive_type in ('zip', 'gz', 'bz2', 'xz'):
             break
-        print("Unsupported archive type. Please choose either 'zip' or 'gz'.")
+        print("Unsupported archive type. Please choose either 'zip' or 'gz', 'bz2' or 'xz'.")
 
     # Pass the expected extension directly to the get_valid_filepath function
     source_file = get_valid_filepath("Source archive file: ", f".{archive_type}")
