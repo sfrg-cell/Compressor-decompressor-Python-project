@@ -1,5 +1,7 @@
 import zipfile
 import gzip
+import bz2
+import xz
 from datetime import datetime
 from pathlib import Path
 
@@ -56,6 +58,39 @@ def compress_to_gzip(filename: str, out_dir: str) -> None:
         print(f"An unexpected error occurred while creating GZIP archive: {e}")
 
 
+def compress_to_bzip2(filename: str, out_dir: str) -> None:
+    """File compression in BZIP2 format."""
+    # Check for the existence of the source file
+    while not Path(filename).exists():
+        print(f"The source file '{filename}' does not exist. Enter a valid source file.")
+        filename = input("Source file: ").strip()
+
+    archive_name = generate_unique_archive_name(filename, 'bz2', out_dir)
+    print(f"Creating BZIP2 archive: {Path(out_dir) / archive_name}")
+    try:
+        with bz2.open(Path(out_dir) / archive_name, 'wb') as f_out:
+            with open(filename, 'rb') as f_in:
+                f_out.write(f_in.read())
+    except Exception as e:
+        print(f"An unexpected error occurred while creating BZIP2 archive: {e}")
+
+ def compress_to_xz(filename: str, out_dir: str) -> None:
+            """File compression in XZ format."""
+            # Check for the existence of the source file
+            while not Path(filename).exists():
+                print(f"The source file '{filename}' does not exist. Enter a valid source file.")
+                filename = input("Source file: ").strip()
+
+            archive_name = generate_unique_archive_name(filename, 'xz', out_dir)
+            print(f"Creating XZ archive: {Path(out_dir) / archive_name}")
+            try:
+                with bz2.open(Path(out_dir) / archive_name, 'wb') as f_out:
+                    with open(filename, 'rb') as f_in:
+                        f_out.write(f_in.read())
+            except Exception as e:
+                print(f"An unexpected error occurred while creating XZ archive: {e}")
+
+
 def main():
     try:
         source_file = input("Source file     : ").strip()
@@ -70,12 +105,20 @@ def main():
             compress_to_zip(source_file, output_dir)
         elif archive_type == 'gzip':
             compress_to_gzip(source_file, output_dir)
+        elif archive_type == 'bzip2':
+            compress_to_bzip2(source_file, output_dir)
+        elif archive_type == 'xz':
+            compress_to_bzip2(source_file, output_dir)
         else:
-            print("Unsupported archive type. Please choose either 'zip' or 'gzip'.")
+            print("Unsupported archive type. Please choose either 'zip', 'gzip', 'bzip2' or 'xz'.")
     except ValueError:
         print("Error: Invalid value entered.")
     except Exception as e:
         print(f"An unexpected error occurred in main: {e}")
 
+
 if __name__ == "__main__":
     main()
+
+
+
