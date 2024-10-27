@@ -3,6 +3,7 @@ import gzip
 import bz2
 import lzma
 from pathlib import Path
+from typing import Callable
 
 def ensure_directory_exists(directory: Path) -> None:
     """Create the directory if it does not exist."""
@@ -13,16 +14,12 @@ def get_valid_filepath(prompt: str, expected_extension: str) -> Path:
     while True:
         filepath = input(prompt).strip()
         path = Path(filepath)
-        # Check if the file exists
         if not path.is_file():
             print(f"Error: The file '{filepath}' does not exist. Please try again.")
-            continue
-        # Check the file extension
-        if path.suffix != expected_extension:
+        elif path.suffix != expected_extension:
             print(f"Error: The file must have a '{expected_extension}' extension.")
-            continue
-        return path
-
+        else:
+            return path
 
 def handle_existing_file(file_path: Path) -> bool:
     """Handle cases when the output file already exists.
@@ -38,12 +35,9 @@ def handle_existing_file(file_path: Path) -> bool:
         elif user_input == 'r':
             new_name = input("Enter a path with a new name for the file: ").strip()
             new_path = Path(new_name)
-
-            # Add the extension if it is not there
             if not new_path.suffix:
                 new_path = new_path.with_suffix(file_path.suffix)
 
-            # Check whether a new file exists
             if not new_path.exists():
                 file_path.rename(new_path)  # Change the file name
                 print(f"File will be saved as '{new_path}'.")
@@ -53,133 +47,88 @@ def handle_existing_file(file_path: Path) -> bool:
         else:
             print("Invalid option. Please enter 'O', 'S', or 'R'.")
 
+def decompress_file(filename: Path, output_dir: Path, decompress_func: Callable[[Path, Path], None]) -> None:
+    """Decompress a file using the provided decompression function."""
+    ensure_directory_exists(output_dir)  # Ensure output directory exists
+    output_filename = filename.with_suffix('.txt').name
+    output_path = output_dir / output_filename
 
-def decompress_zip(zip_filename: Path, extract_to: Path) -> None:
-    """Decompress a ZIP file."""
+    if output_path.exists() and not handle_existing_file(output_path):
+        print("Skipping extraction.")
+        return
+
     try:
-        ensure_directory_exists(extract_to)  # Ensure output directory exists
-        with zipfile.ZipFile(zip_filename, 'r') as zipf:
-            for member in zipf.namelist():
-                output_path = extract_to / member
-
-                # Handle existing files
-                if output_path.exists() and not handle_existing_file(output_path):
-                    print(f"Skipping: {member}")
-                    continue  # Skip this file
-
-                zipf.extract(member, extract_to)
-                print(f"Decompressed ZIP archive: {zip_filename} to {extract_to}")
-    except zipfile.BadZipFile:
-        print(f"Error: '{zip_filename}' is not a valid ZIP archive.")
+        decompress_func(filename, output_path)
+        print(f"Decompressed {filename} to {output_path}")
     except Exception as e:
         print(f"An error occurred: {e}")
 
-
-def decompress_gzip(gzip_filename: Path, output_dir: Path) -> None:
+def decompress_zip(zip_filename: Path, output_path: Path) -> None:
     """Decompress a GZIP file."""
-    ensure_directory_exists(output_dir)  # Ensure output directory exists
+    with zipfile.ZipFile(zip_filename, 'r') as zipf:
+        members = zipf.namelist()
 
-    # Generate the path to the unpacked file in the selected folder
-    output_filename = Path(gzip_filename).with_suffix('.txt').name
-    output_path = Path(output_dir) / output_filename
+        # Checking for a common root directory
+        common_prefix = Path(members[0]).parts[0] if all(Path(m).parts[0] == Path(members[0]).parts[0] for m in members) else ""
 
-    # Check for file existence
-    if output_path.exists():
-        print(f"Output file already exists: {output_path}")
-        if not handle_existing_file(output_path):
-            print("Skipping extraction.")
-            return
+        for member in members:
+            # Remove the common prefix, if there is one
+            relative_path = Path(member).relative_to(common_prefix) if common_prefix else Path(member)
+            output_file_path = output_path / relative_path
 
-    try:
-        with gzip.open(gzip_filename, 'rb') as f_in:  # Open the GZIP file in binary read mode
-            with open(output_path, 'wb') as f_out:  # Open the output file in binary write mode
-                f_out.write(f_in.read())  # Read from the GZIP file and write to the output file
+            if member.endswith('/'):
+                ensure_directory_exists(output_file_path)  # Create a folder
+            else:
+                ensure_directory_exists(output_file_path.parent)  # Create a parent folder
 
-        print(f"Decompressed GZIP archive: {gzip_filename} to {output_path}")
-    except OSError:
-        print(f"Error: '{gzip_filename}' is not a valid GZIP archive.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
+                if output_file_path.exists() and not handle_existing_file(output_file_path):
+                    print(f"Skipping: {member}")
+                    continue
 
-def decompress_xz(xz_filename: Path, output_dir: Path) -> None:
-    """Decompress an XZ file."""
-    ensure_directory_exists(output_dir)  # Ensure output directory exists
+                with zipf.open(member) as source, open(output_file_path, 'wb') as target:
+                    target.write(source.read())
 
-    # Generate the path to the unpacked file by removing .xz extension
-    output_filename = xz_filename.with_suffix('.txt').name
-    output_path = output_dir / output_filename
+                print(f"Extracted '{member}' to '{output_file_path}'")
 
-    # Check for file existence
-    if output_path.exists():
-        print(f"Output file already exists: {output_path}")
-        if not handle_existing_file(output_path):
-            print("Skipping extraction.")
-            return
+def decompress_gzip(gzip_filename: Path, output_path: Path) -> None:
+    """Decompress a GZIP file."""
+    with gzip.open(gzip_filename, 'rb') as f_in:
+        write_file(f_in, output_path)
 
-    try:
-        with lzma.open(xz_filename, 'rb') as f_in:  # Open the XZ file in binary read mode
-            with open(output_path, 'wb') as f_out:  # Open the output file in binary write mode
-                f_out.write(f_in.read())  # Read from the XZ file and write to the output file
-
-        print(f"Decompressed XZ archive: {xz_filename} to {output_path}")
-    except OSError:
-        print(f"Error: '{xz_filename}' is not a valid XZ archive.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-def decompress_bz2(bz2_filename: Path, output_dir: Path) -> None:
+def decompress_bz2(bz2_filename: Path, output_path: Path) -> None:
     """Decompress a BZIP2 file."""
-    ensure_directory_exists(output_dir)  # Ensure output directory exists
+    with bz2.open(bz2_filename, 'rb') as f_in:
+        write_file(f_in, output_path)
 
-    # Generate the path to the unpacked file by removing .bz2 extension
-    output_filename = bz2_filename.with_suffix('.txt').name
-    output_path = output_dir / output_filename
+def decompress_xz(xz_filename: Path, output_path: Path) -> None:
+    """Decompress an XZ file."""
+    with lzma.open(xz_filename, 'rb') as f_in:
+        write_file(f_in, output_path)
 
-    # Check for file existence
-    if output_path.exists():
-        print(f"Output file already exists: {output_path}")
-        if not handle_existing_file(output_path):
-            print("Skipping extraction.")
-            return
-
-    try:
-        with bz2.open(bz2_filename, 'rb') as f_in:  # Open the BZIP2 file in binary read mode
-            with open(output_path, 'wb') as f_out:  # Open the output file in binary write mode
-                f_out.write(f_in.read())  # Read from the BZIP2 file and write to the output file
-
-        print(f"Decompressed BZIP2 archive: {bz2_filename} to {output_path}")
-    except OSError:
-        print(f"Error: '{bz2_filename}' is not a valid BZIP2 archive.")
-    except Exception as e:
-        print(f"An error occurred: {e}")
-
-
+def write_file(source, output_path: Path) -> None:
+    """Write the decompressed content to the output file."""
+    with open(output_path, 'wb') as f_out:
+        f_out.write(source.read())
 
 def main():
     """Main function to handle user input for decompression."""
-    while True:
-        archive_type = input("Archive type (zip/gz/bz2/xz): ").strip().lower()
-        if archive_type in ('zip', 'gz', 'bz2', 'xz'):
-            break
-        print("Unsupported archive type. Please choose either 'zip' or 'gz', 'bz2' or 'xz'.")
+    archive_type = input("Archive type (zip/gz/bz2/xz): ").strip().lower()
+    archive_format_map = {
+        'zip': decompress_zip,
+        'gz': decompress_gzip,
+        'bz2': decompress_bz2,
+        'xz': decompress_xz
+    }
 
-    # Pass the expected extension directly to the get_valid_filepath function
-    source_file = get_valid_filepath("Source archive file: ", f".{archive_type}")
-    output_dir = input("Output directory: ").strip()
-    output_path = Path(output_dir)  # Convert the line to Path
+    if archive_type not in archive_format_map:
+        print("Unsupported archive type. Please choose either 'zip', 'gz', 'bz2' or 'xz'.")
+        return
 
-    print(f"Decompressing {archive_type} file: {source_file} to {output_path}")
-    # Determine which decompression method to call based on the archive type
-    if archive_type == 'zip':
-        decompress_zip(source_file, output_path)
-    elif archive_type == 'gz':
-        decompress_gzip(source_file, output_path)
-    elif archive_type == 'bz2':
-        decompress_bz2(source_file, output_path)
-    elif archive_type == 'xz':
-        decompress_bz2(source_file, output_path)
+    source_file = get_valid_filepath(f"Source archive file: ", f".{archive_type}")
+    output_dir = Path(input("Output directory: ").strip())
+    print(f"Decompressing {archive_type} file: {source_file} to {output_dir}")
 
+    decompress_file(source_file, output_dir, archive_format_map[archive_type])
 
 if __name__ == "__main__":
     main()
-
