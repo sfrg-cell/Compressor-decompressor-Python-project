@@ -8,12 +8,13 @@ from pathlib import Path
 def generate_unique_archive_name(filename: str, extension: str, out_dir: str) -> str:
     """Generates a unique archive name with the date and counter."""
     date = datetime.now().strftime('%Y%m%d')
+    original_extention = Path(filename).suffix
     name = Path(filename).stem
     count = 1  # Initial counter
 
     # Loop to ensure the archive name is unique
     while True:
-        archive_name = f"{name}_{date}_{count}.{extension}"
+        archive_name = f"{name}_{date}_{count}{original_extention}.{extension}"
         archive_path = Path(out_dir) / archive_name
         if not archive_path.exists():  # If the file doesn't exist, return the name
             return archive_name
