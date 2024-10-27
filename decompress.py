@@ -1,5 +1,8 @@
 import zipfile
 import gzip
+import bzip2
+import lzma
+import sys
 from pathlib import Path
 
 def ensure_directory_exists(directory: Path) -> None:
@@ -99,6 +102,50 @@ def decompress_gzip(gzip_filename: Path, output_dir: Path) -> None:
     except Exception as e:
         print(f"An error occurred: {e}")
 
+def decompress(source, output_dir):
+    # Create output directory if it doesn't exist
+    Path(output_dir).mkdir(exist_ok=True)
+
+    # Create output path by removing .bz2 extension from source filename
+    output_path = Path(output_dir) / Path(source).name.replace('.bz2', '')
+
+    # Open source file for reading and destination for writing
+    with bz2.open(source, 'rb') as src, open(output_path, 'wb') as dst:
+        # Read compressed data and write decompressed result
+        dst.write(src.read())
+    print(f"Decompressed: {output_path}")
+
+    # Check if correct number of arguments provided
+    if len(sys.argv) != 3:
+        print("Usage: python decompress.py <source_file> <output_dir>")
+        sys.exit(1)
+
+    # Call decompress function with command line arguments
+    decompress(sys.argv[1], sys.argv[2])
+
+
+def decompress(source, output_dir):
+    # Create output directory if it doesn't exist
+    Path(output_dir).mkdir(exist_ok=True)
+
+    # Create output path by removing .xz extension from source filename
+    output_path = Path(output_dir) / Path(source).name.replace('.xz', '')
+
+    # Open source file for reading and destination for writing
+    with lzma.open(source, 'rb') as src, open(output_path, 'wb') as dst:
+        # Read compressed data and write decompressed result
+        dst.write(src.read())
+    print(f"Decompressed: {output_path}")
+
+# Check if correct number of arguments provided
+if len(sys.argv) != 3:
+    print("Usage: python decompress.py <source_file> <output_dir>")
+    sys.exit(1)
+
+# Call decompress function with command line arguments
+decompress(sys.argv[1], sys.argv[2])
+
+
 
 def main():
     """Main function to handle user input for decompression."""
@@ -119,6 +166,10 @@ def main():
         decompress_zip(source_file, output_path)
     elif archive_type == 'gz':
         decompress_gzip(source_file, output_path)
+    elif archive_type == 'bz2':
+        decompress_bz2(source_file, output_path)
+    elif archive_type == 'xz':
+        decompress_bz2(source_file, output_path)
 
 
 if __name__ == "__main__":
