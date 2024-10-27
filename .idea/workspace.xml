@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="bf9a1a49-c0d0-4378-a10d-9c8f5ac50225" name="Changes" comment="side error" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;sfrg-cell&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/sfrg-cell/lab-1.git&quot;,
+    &quot;accountId&quot;: &quot;2e5c25a7-268d-4bce-8e71-50686f9a461e&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2nezGxW4wFylnfJTbkPLxEdAUNj" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Python.backup.executor": "Run",
+    "Python.compress.executor": "Run",
+    "Python.decompress.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-7c0b70fcd90d-JavaScript-PY-242.21829.153" />
+        <option value="bundled-python-sdk-464836ebc622-b74155a9e76b-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.21829.153" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="bf9a1a49-c0d0-4378-a10d-9c8f5ac50225" name="Changes" comment="" />
+      <created>1729348237346</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729348237346</updated>
+      <workItem from="1729348238554" duration="4997000" />
+      <workItem from="1729421912569" duration="9000" />
+      <workItem from="1729768123221" duration="1193000" />
+      <workItem from="1729771367047" duration="616000" />
+      <workItem from="1729786868589" duration="2685000" />
+      <workItem from="1729796737933" duration="1786000" />
+      <workItem from="1729857144251" duration="2364000" />
+      <workItem from="1729931353905" duration="11920000" />
+      <workItem from="1729961600480" duration="4538000" />
+      <workItem from="1729972210642" duration="7549000" />
+      <workItem from="1730018847244" duration="27909000" />
+      <workItem from="1730055942656" duration="12018000" />
+    </task>
+    <task id="LOCAL-00001" summary="Test print">
+      <option name="closed" value="true" />
+      <created>1729348593685</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1729348593685</updated>
+    </task>
+    <task id="LOCAL-00002" summary="+ compress, decompress. renamed test -&gt; backup">
+      <option name="closed" value="true" />
+      <created>1729352719067</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1729352719067</updated>
+    </task>
+    <task id="LOCAL-00003" summary="+ compress, decompress. renamed test -&gt; backup">
+      <option name="closed" value="true" />
+      <created>1729352892374</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729352892374</updated>
+    </task>
+    <task id="LOCAL-00004" summary="created functions generate_unique_archive_name, ensure_directory_exists and compress_to_zip">
+      <option name="closed" value="true" />
+      <created>1729933842034</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1729933842034</updated>
+    </task>
+    <task id="LOCAL-00005" summary="created main, added try except">
+      <option name="closed" value="true" />
+      <created>1729944350729</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1729944350729</updated>
+    </task>
+    <task id="LOCAL-00006" summary="in compress: changed check for the existence of the source file&#10;in decompress: +decompress_zip, decompress_gzip, main">
+      <option name="closed" value="true" />
+      <created>1729953709403</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1729953709403</updated>
+    </task>
+    <task id="LOCAL-00007" summary="+ ensure_directory_exists,get_valid_filepath,handle_existing_file">
+      <option name="closed" value="true" />
+      <created>1730030262747</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730030262747</updated>
+    </task>
+    <task id="LOCAL-00008" summary="xz and bz2 error correction">
+      <option name="closed" value="true" />
+      <created>1730036314814</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1730036314814</updated>
+    </task>
+    <task id="LOCAL-00009" summary="refractored decompress">
+      <option name="closed" value="true" />
+      <created>1730038938359</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1730038938359</updated>
+    </task>
+    <task id="LOCAL-00010" summary="refractored compress">
+      <option name="closed" value="true" />
+      <created>1730040914505</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1730040914505</updated>
+    </task>
+    <task id="LOCAL-00011" summary="unrefractored compress">
+      <option name="closed" value="true" />
+      <created>1730041588083</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1730041588083</updated>
+    </task>
+    <task id="LOCAL-00012" summary="error correction of every file">
+      <option name="closed" value="true" />
+      <created>1730067067920</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1730067067921</updated>
+    </task>
+    <task id="LOCAL-00013" summary="side error">
+      <option name="closed" value="true" />
+      <created>1730067263023</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1730067263023</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Test print" />
+    <MESSAGE value="+ compress, decompress. renamed test -&gt; backup" />
+    <MESSAGE value="created functions generate_unique_archive_name, ensure_directory_exists and compress_to_zip" />
+    <MESSAGE value="created main, added try except" />
+    <MESSAGE value="in compress: changed check for the existence of the source file&#10;in decompress: +decompress_zip, decompress_gzip, main" />
+    <MESSAGE value="+ ensure_directory_exists,get_valid_filepath,handle_existing_file" />
+    <MESSAGE value="xz and bz2 error correction" />
+    <MESSAGE value="refractored decompress" />
+    <MESSAGE value="refractored compress" />
+    <MESSAGE value="unrefractored compress" />
+    <MESSAGE value="error correction of every file" />
+    <MESSAGE value="side error" />
+    <option name="LAST_COMMIT_MESSAGE" value="side error" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/lab_1$decompress.coverage" NAME="decompress Coverage Results" MODIFIED="1730065474739" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/lab_1$compress.coverage" NAME="compress Coverage Results" MODIFIED="1730044468945" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/lab_1$backup.coverage" NAME="backup Coverage Results" MODIFIED="1730066947174" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+  </component>
+</project>
